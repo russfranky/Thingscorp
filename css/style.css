@@ -1,0 +1,55 @@
+/* Figblocks inspired variables */
+:root {
+  --fig-bg: #f5f4fa;
+  --fig-text: #1f1f1f;
+  --fig-primary: #6a5acd;
+  --fig-secondary: #e0e0e0;
+  --fig-radius: 8px;
+  --fig-font: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--fig-bg);
+  color: var(--fig-text);
+  font-family: var(--fig-font);
+  margin: 0;
+  padding: 0;
+}
+
+.fig-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.fig-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: var(--fig-radius);
+  text-decoration: none;
+  background-color: var(--fig-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.fig-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--fig-secondary);
+  border-radius: var(--fig-radius);
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+header {
+  background-color: white;
+  padding: 1rem;
+  border-bottom: 1px solid var(--fig-secondary);
+}
+
+.fig-nav-link {
+  margin-right: 1rem;
+  color: var(--fig-primary);
+  text-decoration: none;
+}

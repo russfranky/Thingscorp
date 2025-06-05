@@ -1,0 +1,8 @@
+{
+  "name": "thingscorp-site",
+  "version": "1.0.0",
+  "description": "Static site server",
+  "scripts": {
+    "serve": "node server.js"
+  }
+}
