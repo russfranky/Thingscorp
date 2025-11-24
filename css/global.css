@@ -1,0 +1,589 @@
+@import './style.css';
+
+:root {
+  --hubzz-accent: #7f5af0;
+  --hubzz-surface: #0b1021;
+  --hubzz-foreground: #e4e5f1;
+}
+
+body {
+  background-color: var(--hubzz-surface);
+  color: var(--hubzz-foreground);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+a {
+  color: var(--hubzz-accent);
+}
+
+.placeholder-box {
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ticket-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.ticket-card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.ticket-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ticket-number {
+  font-family: 'IBM Plex Mono', Menlo, monospace;
+}
+
+.ticket-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ticket-host {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.25rem;
+}
+
+.ticket-title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.ticket-location {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0.25rem 0 0;
+}
+
+.ticket-countdown {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 0.5rem;
+  text-align: right;
+  font-weight: 600;
+}
+
+.ticket-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ticket-cta {
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--hubzz-accent);
+  color: #0b1021;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ticket-cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stub-page {
+  padding: 2rem;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.stub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stub-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 0.25rem;
+}
+
+.stub-meta {
+  display: grid;
+  gap: 0.25rem;
+  font-family: 'IBM Plex Mono', Menlo, monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stub-hero {
+  display: grid;
+  gap: 1rem;
+}
+
+.stub-hero-image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.stub-hero-body {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.stub-hero-meta {
+  display: grid;
+  gap: 0.2rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stub-venue {
+  margin: 0;
+  font-weight: 600;
+}
+
+.stub-time {
+  margin: 0;
+}
+
+.stub-description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+}
+
+.stub-hero-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.stub-button {
+  padding: 0.65rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--hubzz-accent);
+  color: #0b1021;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.stub-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.stub-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.stub-card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.stub-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stub-hosts {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.stub-avatar {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.stub-avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.stub-avatar-name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.stub-avatar-role {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.stub-guest-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.stub-guest-row {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stub-guest-rank {
+  font-family: 'IBM Plex Mono', Menlo, monospace;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stub-guest-meta {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.stub-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.stub-link {
+  color: var(--hubzz-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Group profile */
+.group-page {
+  display: grid;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.group-hero {
+  background: linear-gradient(135deg, rgba(146, 70, 255, 0.2), rgba(11, 16, 33, 0.85));
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.group-hero-overlay {
+  backdrop-filter: blur(2px);
+  padding: 2rem 2rem 0;
+  background: linear-gradient(180deg, rgba(11, 16, 33, 0.82) 0%, rgba(11, 16, 33, 0.92) 45%, rgba(11, 16, 33, 1) 100%);
+}
+
+.group-hero-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.group-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.group-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.group-hero-text {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.group-badge-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.group-badge {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.group-chip {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.group-title {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.group-description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.group-meta-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.group-avatars {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.group-avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.group-avatar-circle.muted {
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.group-follow-state,
+.group-stub-count {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+}
+
+.group-hero-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.group-follow-btn {
+  padding: 0.65rem 1.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--hubzz-accent);
+  color: #0b1021;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.group-tabs {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.group-tab {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.group-tab.is-active {
+  background: var(--hubzz-accent);
+  color: #0b1021;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.group-section {
+  padding: 0 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.group-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.group-link {
+  color: var(--hubzz-accent);
+  text-decoration: none;
+}
+
+.group-card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.group-event-card,
+.group-merch-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.group-event-image,
+.group-merch-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.group-event-body,
+.group-merch-body {
+  padding: 0.9rem 1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.group-event-date {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.group-event-title,
+.group-merch-title {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.group-event-meta,
+.group-note {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.group-event-footer,
+.group-merch-footer {
+  padding: 0.85rem 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.group-event-capacity,
+.group-merch-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.group-primary-btn,
+.group-secondary-btn {
+  padding: 0.65rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.group-primary-btn {
+  background: var(--hubzz-accent);
+  color: #0b1021;
+}
+
+.group-secondary-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.group-merch-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.group-merch-price {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  font-weight: 700;
+}
+
+.group-members-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.group-member-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.group-member-meta {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.group-member-name {
+  font-weight: 700;
+}
+
+.group-member-role {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.group-member-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
