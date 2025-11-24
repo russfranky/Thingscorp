@@ -2,6 +2,9 @@
 
 Hubzz venue module scaffold built with Next.js and mock data.
 
+> Repository status: legacy static assets have been removed and the codebase now focuses solely on the Next.js venue module
+> scaffold with mock-backed API routes.
+
 ## What the code does today
 - **Next.js mock landing site** – `/event/[eventId]` renders mock Hubzz event data with a countdown, stage list, and host
   roster pulled from the Hubzz API stub. Each stage links to `/event/[eventId]/stage/[stageId]`.
