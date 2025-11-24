@@ -21,6 +21,13 @@ When a user follows a group, upcoming events should surface in their feed as car
 - Keep the starter kit’s drop-in audio/video rooms (100ms-backed) as a greenroom/backstage option. Match the mobile mock with avatar tiles, mute badges, speaking ring, and quick controls (mic/camera toggle, leave, participants list) plus a location label like “Hubzz rooftop.” Leave layout room alongside the stream embed for the drop-in strip.
 - Mirror the notifications feed mock: show event creation notices (e.g., “Hubzz HQ created a new event”) and social actions (friend requests/accepts) with CTAs **View details**, **Accept**, **Decline**, and **View profile** sourced from followed-group and social graph APIs when available.
 
+## Why we’re using the Vercel Virtual Event Starter Kit
+
+- **Speed:** It already ships with the landing/agenda/speaker sections, stage pages, and ticket flows we need; we’re swapping DatoCMS/Redis and GitHub OAuth for Hubzz APIs and Privy.
+- **No clash with mediasoup:** The optional 100ms drop-in block is for greenroom/web viewing and does not replace Hubzz’s spatial audio/video stack in the 3D client.
+- **Integration points:** Wire Hubzz auth (Privy), fetch events/groups/tickets/stubs from Hubzz services, and generate stage-specific deep links to launch the Hubzz client at the right zone/module.
+- **Mapping to venue modules:** Each stage page corresponds to a Hubzz venue module/zone; the landing page gates joins until live and can embed external streams alongside the Hubzz join CTA.
+
 ## How this maps to the Strategic Integration Proposal
 
 - **Covered here (scaffold layer):** Mock Hubzz event/stage pages, countdown + stream queue placeholders, deep-link helper, and the Hubzz API stub that stands in for real event, stage, and host data. This repo currently delivers the public-facing landing shell outlined in the proposal (pre-event page, stage links, and Hubzz entry buttons) but with mock data.

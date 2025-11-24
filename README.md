@@ -44,6 +44,16 @@ The mobile mock for following a group shows upcoming events as rich cards (title
 - Preserve the starter kit’s drop-in A/V experience (100ms-backed) for greenroom/backstage use: a grid of avatars with mute state, speaking ring, and standard controls (toggle mic/camera, leave, participants list). Keep the “Hubzz rooftop” context label for spatial awareness and leave UI room for the drop-in tile strip when a stream embed is present.
 - Event notifications should mirror the mobile mock: a feed surface that shows "Hubzz HQ created a new event" plus friend requests or accepts, with CTAs like **View details**, **Accept**, **Decline**, and **View profile**. Wire this to followed-group and social graph data once those APIs are available.
 
+## How the Vercel Virtual Event Starter Kit fits Hubzz
+
+The starter kit is our public web shell for events: a Next.js landing + management layer that we adapt to Hubzz. It accelerates delivery because it already includes schedule/speaker sections, multi-stage pages, ticket flows, and embed slots. It **does not touch mediasoup or the 3D client**—it simply funnels users into Hubzz via deep links.
+
+- **Time saver:** Ready-made landing pages, multi-stage routing, countdowns, and ticket/registration flows that we hook to Hubzz data instead of DatoCMS/Redis.
+- **No RTC conflict:** The optional 100ms drop-in block is useful for greenroom/web viewing and does not replace Hubzz’s spatial A/V; mediasoup stays the in-venue stack.
+- **Integration focus:** Swap GitHub OAuth for Privy, replace CMS calls with Hubzz APIs (events, groups, tickets, stubs), and wire "Enter Hubzz" deep links per stage/zone. External embeds (YouTube/Twitch/etc.) coexist with Hubzz venue joins.
+- **Multi-stage mapping:** Each `/stage/*` page maps to a Hubzz venue module/zone; the landing page lists stages and gates joins until live.
+- **Post-event:** Tickets convert to stubs with replay/host context, aligning with Event Stub NFT plans.
+
 ## Development
 
 ### Next.js scaffolding (Hubzz landing work)
