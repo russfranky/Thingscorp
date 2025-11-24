@@ -3,7 +3,6 @@
 This folder documents the current state of the Hubzz event landing scaffold that lives in this repository. It explains what runs today, how to try it locally, and what remains to be wired to real Hubzz services.
 
 ## What the code does now
-- **Static preview** – `npm run serve` starts `server.js` to serve the built static assets (including `index.html`) on port 8080. Unknown routes fall back to `index.html` so you can click around without a Next.js build.
 - **Mock-backed event landing** – The Next.js route `/event/[eventId]` renders mock Hubzz event data (name, timing, stages, hosts) from the Hubzz API stub. It shows a countdown before the start time, lists stages, and links to per-stage pages.
 - **Stage pages** – `/event/[eventId]/stage/[stageId]` displays placeholder embeds (spatial or external stream) and hides the “Open in Hubzz” button until the event is live. Deep links use the helper in `lib/deep-links.ts` with a mobile fallback to the web client. A drop-in audio/video strip mirrors the backstage UI with host badges and mute/speaking state.
 - **Hubzz API stub + mock data** – `lib/hubzz-api.ts` validates responses with Zod and serves mock events, stages, group members, and stream queues from `lib/mock-data.ts`. Toggle mocks via the exported `useMock` flag.
@@ -29,20 +28,14 @@ When a user follows a group, upcoming events should surface in their feed as car
 - **Where to align details:** Architectural decisions and open questions from the strategic proposal (auth scope, treasury/chain, backstage APIs, stream queue SLAs) are tracked in `docs/hubzz-open-decisions.md` and the broader plan in `docs/hubzz-event-site-integration.md`.
 
 ## How to run it
-1. **Static preview (no installs):**
-   ```bash
-   npm run serve
-   ```
-   Then open <http://localhost:8080> to browse the built assets.
-
-2. **Next.js mock scaffold:**
+1. **Next.js mock scaffold:**
    ```bash
 npm install
 npm run dev
 ```
 Visit <http://localhost:3000/event/sample> to see the mock event and <http://localhost:3000/event/sample/stage/stage-a> for a stage page. If `npm install` fails with registry 403 errors in a restricted network, run `npm run fix-npm-proxy` first (set `PROXY_URL` if your proxy requires auth) and see `docs/installation-troubleshooting.md` for proxy guidance.
 
-3. **Mock API routes:**
+2. **Mock API routes:**
    The Next.js API routes ship with the same mock data used by the pages so you can exercise the JSON responses locally. They default to mock mode (controlled by `HUBZZ_USE_MOCK` / `NEXT_PUBLIC_HUBZZ_USE_MOCK`); append `?mock=false` once real Hubzz endpoints are available.
    - `GET /api/events/[eventId]`
    - `GET /api/events/[eventId]/stages`

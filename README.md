@@ -1,11 +1,8 @@
 # Thingscorp
 
-A simple static website with a Figblocks-inspired design. Use this repository to build and share small projects.
+Hubzz venue module scaffold built with Next.js and mock data.
 
 ## What the code does today
-
-- **Static site preview** – `npm run serve` launches `server.js`, which serves the existing static assets (including
-  `index.html`) on port 8080 for a quick demo without installing any build tools.
 - **Next.js mock landing site** – `/event/[eventId]` renders mock Hubzz event data with a countdown, stage list, and host
   roster pulled from the Hubzz API stub. Each stage links to `/event/[eventId]/stage/[stageId]`.
 - **Stage experience preview** – Stage pages show an embed placeholder for spatial or external streams, gate the "Open in
@@ -45,16 +42,6 @@ The mobile mock for following a group shows upcoming events as rich cards (title
 - Event notifications should mirror the mobile mock: a feed surface that shows "Hubzz HQ created a new event" plus friend requests or accepts, with CTAs like **View details**, **Accept**, **Decline**, and **View profile**. Wire this to followed-group and social graph data once those APIs are available.
 
 ## Development
-
-### Static preview
-
-To view the existing static site without installing external packages, run:
-
-```bash
-npm run serve
-```
-
-This uses `server.js` to start a small HTTP server on port 8080. Open <http://localhost:8080> in your browser.
 
 ### Next.js scaffolding (Hubzz landing work)
 

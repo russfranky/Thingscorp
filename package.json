@@ -1,9 +1,8 @@
 {
   "name": "thingscorp-site",
   "version": "1.0.0",
-  "description": "Static site server and Next.js scaffolding for Hubzz landing integration",
+  "description": "Next.js scaffold for the Hubzz venue module",
   "scripts": {
-    "serve": "node server.js",
     "fix-npm-proxy": "bash scripts/fix-npm-proxy.sh",
     "dev": "next dev",
     "build": "next build",
