@@ -1,16 +1,25 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import { CountdownTimer } from '@/components/countdown-timer';
-import { getEvent, getEventStages, HubzzEvent, HubzzStage } from '@/lib/hubzz-api';
+import { DropInStrip } from '@/components/drop-in-strip';
+import {
+  DropInSession,
+  getDropInSession,
+  getEvent,
+  getEventStages,
+  HubzzEvent,
+  HubzzStage,
+} from '@/lib/hubzz-api';
 import { generateDeepLink, openHubzzLink } from '@/lib/deep-links';
 import { defaultUseMock } from '@/lib/mock-config';
 
 interface Props {
   event: HubzzEvent;
   stage: HubzzStage;
+  dropIn: DropInSession;
 }
 
-export default function StagePage({ event, stage }: Props) {
+export default function StagePage({ event, stage, dropIn }: Props) {
   const deepLink = generateDeepLink(stage);
   const isLive = new Date(event.startTime).getTime() <= Date.now();
 
@@ -49,6 +58,8 @@ export default function StagePage({ event, stage }: Props) {
         </button>
       </section>
 
+      <DropInStrip session={dropIn} />
+
       <Link href={`/event/${event.id}`}>Back to event</Link>
     </main>
   );
@@ -64,6 +75,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const useMock = defaultUseMock();
   const event = await getEvent(eventId, { useMock });
   const stages = await getEventStages(eventId, { useMock });
+  const dropIn = await getDropInSession(eventId, { useMock });
   const stage = stages.find((item) => item.id === stageId);
 
   if (!stage) {
@@ -71,7 +83,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   return {
-    props: { event, stage },
+    props: { event, stage, dropIn },
     revalidate: 30,
   };
 };

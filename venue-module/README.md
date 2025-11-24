@@ -5,10 +5,11 @@ This folder documents the current state of the Hubzz event landing scaffold that
 ## What the code does now
 - **Static preview** – `npm run serve` starts `server.js` to serve the built static assets (including `index.html`) on port 8080. Unknown routes fall back to `index.html` so you can click around without a Next.js build.
 - **Mock-backed event landing** – The Next.js route `/event/[eventId]` renders mock Hubzz event data (name, timing, stages, hosts) from the Hubzz API stub. It shows a countdown before the start time, lists stages, and links to per-stage pages.
-- **Stage pages** – `/event/[eventId]/stage/[stageId]` displays placeholder embeds (spatial or external stream) and hides the “Open in Hubzz” button until the event is live. Deep links use the helper in `lib/deep-links.ts` with a mobile fallback to the web client.
+- **Stage pages** – `/event/[eventId]/stage/[stageId]` displays placeholder embeds (spatial or external stream) and hides the “Open in Hubzz” button until the event is live. Deep links use the helper in `lib/deep-links.ts` with a mobile fallback to the web client. A drop-in audio/video strip mirrors the backstage UI with host badges and mute/speaking state.
 - **Hubzz API stub + mock data** – `lib/hubzz-api.ts` validates responses with Zod and serves mock events, stages, group members, and stream queues from `lib/mock-data.ts`. Toggle mocks via the exported `useMock` flag.
 - **Placeholder UI** – Components like `components/countdown-timer.tsx` and `components/stream-queue.tsx` render the countdown and stream queue preview, styled with shared placeholder rules in `css/global.css`.
 - **Ticket wallet preview** – `/tickets` shows mock tickets with day/hour/minute countdowns until join opens, a distinct current-location ticket, stub states for past events (mirroring the mobile feed card CTA behavior), and links to stub detail pages at `/stubs/[stubId]`.
+- **Notifications preview** – `/notifications` renders mock event + social notifications that mirror the mobile feed (event announcements, friend requests/accepts) with CTA links.
 - **Group detail preview** – `/groups/[groupId]` mirrors the mobile group profile mock with tabs for upcoming events (RSVP CTA +
   time range), stub-gated merch with owned stub counts, and members who carry host/mod privileges during events.
 
@@ -46,9 +47,11 @@ Visit <http://localhost:3000/event/sample> to see the mock event and <http://loc
    - `GET /api/events/[eventId]`
    - `GET /api/events/[eventId]/stages`
    - `GET /api/events/[eventId]/stream-queue`
+   - `GET /api/events/[eventId]/drop-in`
    - `GET /api/groups/[groupId]/members`
    - `GET /api/groups/[groupId]`
    - `GET /api/users/[userId]/tickets`
+   - `GET /api/users/[userId]/notifications`
    - `GET /api/stubs/[stubId]`
 
 ## What still needs wiring

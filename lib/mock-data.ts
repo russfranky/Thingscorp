@@ -2,9 +2,11 @@ import {
   GroupMember,
   HubzzEvent,
   HubzzGroupProfile,
+  HubzzNotification,
   HubzzStage,
   HubzzStub,
   HubzzTicket,
+  DropInSession,
   StreamQueue,
 } from './hubzz-api';
 
@@ -67,6 +69,43 @@ export const mockStreamQueue: StreamQueue = {
       channelId: 'hubzz-live',
       embedUrl: 'https://player.twitch.tv/?channel=hubzz-live&parent=localhost',
       priority: 2,
+    },
+  ],
+};
+
+export const mockDropInSession: DropInSession = {
+  id: 'dropin-1',
+  locationLabel: 'Hubzz rooftop',
+  roomName: 'Main Stage Backstage',
+  participants: [
+    {
+      id: 'p1',
+      name: 'Wendy',
+      role: 'Host',
+      isHost: true,
+      isMuted: false,
+      isSpeaking: true,
+    },
+    {
+      id: 'p2',
+      name: 'Myra',
+      role: 'Moderator',
+      isMuted: false,
+      isSpeaking: false,
+    },
+    {
+      id: 'p3',
+      name: 'Dimitri',
+      role: 'Speaker',
+      isMuted: true,
+      isSpeaking: false,
+    },
+    {
+      id: 'p4',
+      name: 'Alex',
+      role: 'Guest',
+      isMuted: true,
+      isSpeaking: false,
     },
   ],
 };
@@ -245,3 +284,40 @@ export const mockGroupProfile: HubzzGroupProfile = {
   ],
   members: mockGroupMembers,
 };
+
+export const mockNotifications: HubzzNotification[] = [
+  {
+    id: 'notif-1',
+    type: 'event',
+    title: 'Hubzz HQ created a new event',
+    message: 'A Moment to remember · Starts in 1d 3h',
+    ctaLabel: 'View details',
+    ctaHref: '/event/event-123',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'notif-2',
+    type: 'friend-request',
+    title: 'Liam sent you a friend request',
+    message: 'Tap to view profile or accept/decline the request.',
+    ctaLabel: 'View profile',
+    ctaHref: '/profile/liam',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'notif-3',
+    type: 'friend-accepted',
+    title: 'Nia accepted your friend request',
+    message: 'You can now invite them to events and stages.',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'notif-4',
+    type: 'system',
+    title: 'Event starting soon',
+    message: 'Creators Collective begins in 15 minutes. Join from your ticket.',
+    ctaLabel: 'Open tickets',
+    ctaHref: '/tickets',
+    createdAt: new Date().toISOString(),
+  },
+];

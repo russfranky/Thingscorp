@@ -7,6 +7,8 @@ import {
   mockTickets,
   mockStubs,
   mockGroupProfile,
+  mockDropInSession,
+  mockNotifications,
 } from './mock-data';
 
 const baseUrl = process.env.HUBZZ_API_URL || 'https://api.hubzz.local';
@@ -80,6 +82,34 @@ export const hubzzTicketSchema = z.object({
   deepLink: z.string(),
   stubId: z.string().optional(),
   isCurrent: z.boolean().optional(),
+});
+
+const dropInParticipantSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  avatarUrl: z.string().url().optional(),
+  role: z.string().optional(),
+  isHost: z.boolean().optional(),
+  isMuted: z.boolean().optional(),
+  isSpeaking: z.boolean().optional(),
+});
+
+export const dropInSessionSchema = z.object({
+  id: z.string(),
+  locationLabel: z.string().optional(),
+  roomName: z.string().optional(),
+  participants: z.array(dropInParticipantSchema),
+});
+
+export const notificationSchema = z.object({
+  id: z.string(),
+  type: z.enum(['event', 'friend-request', 'friend-accepted', 'system']),
+  title: z.string(),
+  message: z.string(),
+  ctaLabel: z.string().optional(),
+  ctaHref: z.string().optional(),
+  createdAt: z.string(),
+  avatarUrl: z.string().url().optional(),
 });
 
 const stubPersonSchema = z.object({
@@ -169,6 +199,8 @@ export type StreamQueue = z.infer<typeof streamQueueSchema>;
 export type HubzzTicket = z.infer<typeof hubzzTicketSchema>;
 export type HubzzStub = z.infer<typeof hubzzStubSchema>;
 export type HubzzGroupProfile = z.infer<typeof groupProfileSchema>;
+export type DropInSession = z.infer<typeof dropInSessionSchema>;
+export type HubzzNotification = z.infer<typeof notificationSchema>;
 
 export class HubzzApiError extends Error {
   constructor(message: string, public status?: number) {
@@ -221,6 +253,14 @@ export async function getStreamQueue(eventId: string, { useMock = false } = {}):
   return fetchJson(`/events/${eventId}/stream-queue`, streamQueueSchema);
 }
 
+export async function getDropInSession(
+  eventId: string,
+  { useMock = false } = {},
+): Promise<DropInSession> {
+  if (useMock) return dropInSessionSchema.parse(mockDropInSession);
+  return fetchJson(`/events/${eventId}/drop-in`, dropInSessionSchema);
+}
+
 export async function getUserTickets(
   userId: string,
   { useMock = false } = {}
@@ -236,6 +276,14 @@ export async function getStub(stubId: string, { useMock = false } = {}): Promise
     return hubzzStubSchema.parse(stub);
   }
   return fetchJson(`/stubs/${stubId}`, hubzzStubSchema);
+}
+
+export async function getUserNotifications(
+  userId: string,
+  { useMock = false } = {},
+): Promise<HubzzNotification[]> {
+  if (useMock) return z.array(notificationSchema).parse(mockNotifications);
+  return fetchJson(`/users/${userId}/notifications`, z.array(notificationSchema));
 }
 
 export async function getGroupProfile(

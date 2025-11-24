@@ -10,9 +10,11 @@ A simple static website with a Figblocks-inspired design. Use this repository to
   roster pulled from the Hubzz API stub. Each stage links to `/event/[eventId]/stage/[stageId]`.
 - **Stage experience preview** – Stage pages show an embed placeholder for spatial or external streams, gate the "Open in
   Hubzz" button until the event start time, and use the deep-link helper to open the Hubzz client with a mobile fallback.
+- **Drop-in strip preview** – Stage pages now include a drop-in audio/video strip to mirror the backstage UI shown in the mocks
+  (host badges, mute/speaking state, location label like “Hubzz rooftop”).
 - **API + mock data layer** – `lib/hubzz-api.ts` validates responses with Zod, serves mock events/stages/group members/stream
-  queues from `lib/mock-data.ts`, and exposes helpers like `getEvent`, `getEventStages`, `getGroupMembers`, and
-  `getStreamQueue` with a `useMock` flag.
+  queues from `lib/mock-data.ts`, and exposes helpers like `getEvent`, `getEventStages`, `getGroupMembers`, `getStreamQueue`,
+  and `getDropInSession` with a `useMock` flag.
 - **Deep link utilities** – `lib/deep-links.ts` builds Hubzz client URLs (including optional tokens) and provides an
   `openHubzzLink` helper that handles mobile deep-link fallback to the web client.
 - **Placeholder UI components** – `components/countdown-timer.tsx` and `components/stream-queue.tsx` provide countdown and
@@ -22,6 +24,8 @@ A simple static website with a Figblocks-inspired design. Use this repository to
 - **Group profile preview** – `/groups/[groupId]` mirrors the mobile group detail mock with an events tab (upcoming schedule +
   RSVP CTA), a merch tab showing stub-gated items and owned stub counts, and a members tab indicating who has host/mod
   privileges during events.
+- **Notifications preview** – `/notifications` shows mock event announcements and social updates with CTA links to mirror the
+  mobile notifications feed.
 
 ### Design note: follower feed cards
 
@@ -74,9 +78,11 @@ They default to mock mode (controlled by `HUBZZ_USE_MOCK`/`NEXT_PUBLIC_HUBZZ_USE
 - `GET /api/events/[eventId]`
 - `GET /api/events/[eventId]/stages`
 - `GET /api/events/[eventId]/stream-queue`
+- `GET /api/events/[eventId]/drop-in`
 - `GET /api/groups/[groupId]/members`
 - `GET /api/groups/[groupId]`
 - `GET /api/users/[userId]/tickets`
+- `GET /api/users/[userId]/notifications`
 - `GET /api/stubs/[stubId]`
 
 ### Authentication (Privy)
