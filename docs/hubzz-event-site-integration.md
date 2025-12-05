@@ -5,6 +5,11 @@ This document outlines how to adapt the Vercel Virtual Event Starter Kit into a 
 ## Objectives
 - Replace DatoCMS content fetching with Hubzz event data APIs.
 - Swap GitHub OAuth for Privy-powered Hubzz authentication (wallet-first) while retaining optional GitHub login only if needed later.
+This document outlines how to adapt the Vercel Virtual Event Starter Kit into a Hubzz-compatible event landing experience. The goal is to keep the starter kit's marketing strengths while wiring it into Hubzz authentication, ticketing, and spatial venues.
+
+## Objectives
+- Replace DatoCMS content fetching with Hubzz event data APIs.
+- Swap GitHub OAuth for Hubzz authentication (wallet + social) while retaining optional GitHub login.
 - Support multi-stage events mapped to Hubzz zones/venues, with deep links into the Hubzz client.
 - Keep the optional 100ms drop-in rooms while adding external stream embeds (Kick/Twitch/YouTube) and queueing.
 - Enable HBC-powered ticketing that mints Event Stub NFTs and unlocks venue access.
@@ -90,6 +95,12 @@ The plan is ready; the remaining work is implementation. The list below calls ou
 
 ### Can we complete it?
 Yes. The roadmap is fully specified above. Once the decision dependencies are confirmed, we can implement each step in order (auth → data client → routes → embeds → ticketing/NFTs → deep links → branding → tests) and deliver the completed Hubzz landing site within the outlined 6–8 week timeline.
+## Current Progress Snapshot
+- **Plan completeness**: Architecture, API contract, implementation blueprint, and testing strategy are all drafted and ready for execution.
+- **Repository state**: No code migrations have begun; the starter kit still needs DatoCMS removal, Hubzz auth wiring, and new event routes.
+- **Dependencies & envs**: Hubzz-specific environment variables are defined here but have not yet been added to `.env.example` or validated in code.
+- **Open decisions**: Awaiting confirmation on auth scope (GitHub fallback vs. Hubzz-only), HBC treasury details, backstage API support, and stream queue SLA—these are required before implementation starts.
+- **Next actionable steps**: Remove DatoCMS bindings, scaffold Hubzz auth provider, add the Hubzz API client with Zod validation, and create dynamic `/event/[eventId]/stage/[stageId]` routes using ISR.
 
 ## Environment Variables
 Configure the Next.js app with Hubzz settings:
@@ -112,6 +123,8 @@ Use the provided Privy App ID `cIp0x8o7t0Jh5jt0fmxIqcrpa` for both `PRIVY_APP_ID
 
 ## Core Replacements
 - **Authentication (Privy)**: Use Privy as the primary auth provider for the landing site, wiring `pages/api/auth/[...nextauth].ts` (or Privy middleware) to Privy credentials and mapping the Privy session payload to the Hubzz session shape (id, username, avatar, wallet address, group roles). Keep GitHub only if a future fallback is explicitly required.
+## Core Replacements
+- **Authentication**: Replace GitHub provider with a Hubzz OAuth provider at `/api/auth/login`; optionally keep GitHub as a secondary provider. Sessions must respect Hubzz JWT tokens and expose avatar, username, wallet address, and group roles.
 - **Data Layer**: Remove DatoCMS calls and add a `lib/hubzz-api.ts` client that fetches events, stages, group members, and ticketing info from Hubzz. Use ISR to refresh event data every ~30s.
 - **Routing**: Convert static `/stage/a` pages into dynamic routes:
   - `/event/[eventId]` — landing page with schedule, speakers, countdown, ticket CTA.
@@ -137,6 +150,9 @@ Follow these sequential steps to convert the starter kit into the Hubzz landing 
 2. **Auth bridge (Privy)**
    - Implement `pages/api/auth/[...nextauth].ts` (or Privy Next.js middleware) using Privy credentials and map the Privy user/session payload to Hubzz session fields (id, username, avatar, wallet, group roles).
    - Handle Privy session refresh/reauth flows per the Privy SDK; keep sensitive tokens server-side and expose only the session shape needed by the UI.
+2. **Auth bridge**
+   - Implement `pages/api/auth/[...nextauth].ts` with the Hubzz OAuth endpoints and JWT mapping (id, username, avatar, wallet, group roles).
+   - Add a token refresh helper that exchanges the Hubzz refresh token for a new access token before expiry; store refresh token in encrypted cookies.
    - Expose a `useSession` wrapper that includes `groupRole` and `walletAddress` to simplify backstage and ticketing guards.
 
 3. **Hubzz API client**
@@ -180,6 +196,7 @@ Follow these sequential steps to convert the starter kit into the Hubzz landing 
 ## Architecture Notes (to guide implementation)
 - **Server boundaries**: Keep all Hubzz API calls server-side in `getStaticProps`/API routes to avoid leaking secrets. Client-side fetches should hit your own Next.js API routes that proxy and validate.
 - **Token handling (Privy)**: Follow Privy's Next.js guidance—use the Privy server SDK to verify sessions server-side, keep Privy cookies HttpOnly + `SameSite=Lax`, and avoid exposing Privy tokens to the client beyond the session shape the UI needs. Ensure ISR revalidation uses application credentials, not user tokens.
+- **Token handling**: Store Hubzz refresh tokens HttpOnly + `SameSite=Lax`; use access tokens in memory. Ensure ISR revalidation uses application credentials, not user tokens.
 - **Role enforcement**: Centralize `requireHostRole` helper for backstage routes and buttons to avoid scattered role checks.
 - **Embed safety**: Sanitize external stream URLs, and set appropriate `allow`/`sandbox` attributes on iframes.
 - **Progressive enhancement**: The site must still render static content (schedule, speakers, sponsors) even if Hubzz APIs are temporarily unavailable; show degradations with clear messaging.
@@ -189,6 +206,10 @@ Follow these sequential steps to convert the starter kit into the Hubzz landing 
   - Client uses Privy SDK for login; server verifies the Privy session via Privy server SDK in Next.js API routes or `getServerSideProps`.
   - Optional helper route can exchange the Privy session for a Hubzz-session token if required by downstream Hubzz APIs.
   - Session shape exposed to Next.js: `{ id, username, avatarUrl, walletAddress, groupRole, privyUserId }`.
+- **Auth**
+  - `POST /api/auth/login` → Hubzz OAuth authorize URL; exchanges `code` for `{ accessToken, refreshToken, expiresIn }`.
+  - `POST /api/auth/refresh` → exchanges refresh token; returns `{ accessToken, expiresIn }`.
+  - Session shape exposed to Next.js: `{ id, username, avatarUrl, walletAddress, groupRole, accessTokenExpiresAt }`.
 - **Events & stages**
   - `GET /api/event/:eventId` → `{ id, name, description, startTime, endTime, zoneId, venueCoordinates, ticketPrice, recordingUrl }`.
   - `GET /api/event/:eventId/stages` → `[ { id, name, venueModuleId, streamType, externalStreamUrl, deepLink } ]`.
@@ -206,6 +227,7 @@ Follow these sequential steps to convert the starter kit into the Hubzz landing 
 
 ## Error handling and degraded modes
 - **Auth failures**: Display a retry CTA; clear cookies on repeated 401s; never block static content because of auth errors. Surface Privy-specific troubleshooting (wallet connect, email magic link) where applicable.
+- **Auth failures**: Display a retry CTA; clear cookies on repeated 401s; never block static content because of auth errors.
 - **Ticket purchase errors**: Show specific messages for insufficient HBC balance, transaction failures, or minting failures; expose `txHash` when available for support.
 - **Stream embed failures**: Detect iframe load errors and surface the spatial-audio fallback with a dismissible alert; log the failing stream id for telemetry.
 - **Deep-link failures**: Provide a manual copy button for the Hubzz client URL when automatic deep linking fails or is blocked by the platform.
@@ -224,6 +246,7 @@ Follow these sequential steps to convert the starter kit into the Hubzz landing 
 
 ## Open questions to resolve with stakeholders
 - Confirm Privy app IDs/secrets for staging vs. production and whether any legacy GitHub fallback is still desired for web-only flows.
+- Should GitHub OAuth remain as a fallback for web-only users, or is Hubzz auth exclusive?
 - What is the exact HBC treasury address and chain (mainnet/testnet) for ticket transfers during staging vs. production?
 - Are backstage moderator actions currently API-backed (mute/kick), or should the UI ship as placeholders until server support is ready?
 - What SLA is expected for stream queue freshness (e.g., 10s vs. 30s), and who operates the queue updates (Hubzz ops vs. automated signals)?
